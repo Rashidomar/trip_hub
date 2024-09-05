@@ -13,7 +13,9 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async signIn(signInDto: userSignInDto): Promise<{ accessToken: string }> {
+  async signIn(
+    signInDto: userSignInDto,
+  ): Promise<{ user: any; accessToken: string }> {
     const foundUser = await this.userService.findOne(signInDto.username);
     if (!foundUser) {
       throw new ForbiddenException('Username does not exist');
@@ -22,9 +24,12 @@ export class AuthService {
       throw new UnauthorizedException('Incoorect Password');
     }
     const payLoad = { sub: foundUser.userId, username: foundUser.username };
-    const accessToken = await this.jwtService.signAsync(payLoad);
+    const accessToken = await this.jwtService.signAsync(payLoad, {
+      secret: 'Your_Secret',
+    });
 
     return {
+      user: foundUser,
       accessToken: accessToken,
     };
   }

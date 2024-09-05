@@ -5,7 +5,12 @@ import { AuthService } from './auth.service';
 import { UserService } from 'src/user/user.service';
 
 @Module({
-  imports: [JwtModule.register({})],
+  imports: [
+    JwtModule.register({
+      global: true,
+      signOptions: { expiresIn: '60s' },
+    }),
+  ],
   controllers: [AuthController],
   providers: [AuthService, UserService],
 })
