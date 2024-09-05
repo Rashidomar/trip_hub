@@ -1,12 +1,31 @@
-import { Injectable } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { userSignInDto } from 'src/DTO/User.dto';
 import { UserService } from 'src/user/user.service';
+import { JwtService } from '@nestjs/jwt';
 @Injectable()
 export class AuthService {
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private jwtService: JwtService,
+  ) {}
 
-  async signIn(signInDto: userSignInDto) {
+  async signIn(signInDto: userSignInDto): Promise<{ accessToken: string }> {
     const foundUser = await this.userService.findOne(signInDto.username);
-    console.log(foundUser)
+    if (!foundUser) {
+      throw new ForbiddenException('Username does not exist');
+    }
+    if (foundUser.password !== signInDto.password) {
+      throw new UnauthorizedException('Incoorect Password');
+    }
+    const payLoad = { sub: foundUser.userId, username: foundUser.username };
+    const accessToken = await this.jwtService.signAsync(payLoad);
+
+    return {
+      accessToken: accessToken,
+    };
   }
 }
