@@ -26,8 +26,9 @@ module.exports = {
       {
         endOfLine: 'auto',
         parser: 'flow',
+        singleQuote: true,
       },
-      { usePrettierrc: true },
+      { usePrettierrc: false },
     ],
   },
 };
