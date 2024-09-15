@@ -28,7 +28,7 @@ module.exports = {
         parser: 'flow',
         endOfLine: 'auto',
       },
-      { usePrettierrc: true },
+      { usePrettierrc: false },
     ],
   },
 };
