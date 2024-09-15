@@ -22,7 +22,7 @@ export class AuthService {
       };
     }
 
-    const token = await this.jwtService.signAsync({ sub: user.userId });
+    const token = await this.jwtService.signAsync({ sub: user.userId, username : user.username });
 
     return {
       user: user,
