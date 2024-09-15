@@ -1,6 +1,7 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import { Controller, Get, Req, Res, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { AuthGuard } from '@nestjs/passport';
+import { Request } from 'express';
 
 @Controller('users')
 export class UserController {
@@ -8,7 +9,8 @@ export class UserController {
 
   @UseGuards(AuthGuard('jwt'))
   @Get('all')
-  findAll() {
-    return this.userService.findAll();
+  findAll(@Req() req: Request) {
+    console.log(req.user);
+    return this.userService.findAll()
   }
 }
