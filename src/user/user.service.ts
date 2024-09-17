@@ -14,8 +14,14 @@ export class UserService {
     return this.userRepo.find()
   }
 
-  async findOne(id: number):Promise<UserEntity | null> {
+  async findById(id: number):Promise<UserEntity | null> {
     return this.userRepo.findOneBy({id})
+  }
+
+  async findOne(username: string):Promise<UserEntity | null>{
+    return this.userRepo.findOneBy({
+      username:username
+    })
   }
 
   createUser(userData) {
