@@ -10,29 +10,39 @@ export class UserService {
     private userRepo: Repository<UserEntity>,
   ) {}
 
-  async findAll():Promise<UserEntity[]> {
-    return this.userRepo.find()
+  async findAll(): Promise<UserEntity[]> {
+    return this.userRepo.find();
   }
 
-  async findById(id: number):Promise<UserEntity | null> {
-    return this.userRepo.findOneBy({id})
+  async findById(id: number): Promise<UserEntity | null> {
+    return this.userRepo.findOneBy({ id });
   }
 
-  async findOne(username: string):Promise<UserEntity | null>{
+  async findOne(username: string): Promise<UserEntity | null> {
     return this.userRepo.findOneBy({
-      username:username
-    })
+      username: username,
+    });
   }
 
-  createUser(userData) {
-    const newUser = new UserEntity()
-    newUser.username = userData.username
-    newUser.email = userData.email
-    newUser.password = userData.password
-    const savedUser = this.userRepo.save(newUser)
+  async createUser(userData): Promise<UserEntity | null> {
+    const newUser = new UserEntity();
+    newUser.username = userData.username;
+    newUser.email = userData.email;
+    newUser.password = userData.password;
+    const savedUser = this.userRepo.save(newUser);
     return savedUser;
-    // const result = userData;
-    // console.log(result);
-    // return userData;
+  }
+
+  async updateUser(userData) {
+    const findUser = await this.findById(userData.id)
+    findUser.username = userData.username
+    const updatedUser = await this.userRepo.save(findUser)
+    return updatedUser
+  }
+
+  async deleteUser(id:number){
+    const findUser = await this.findById(id)
+    const deleteUser = await this.userRepo.remove(findUser)
+    return deleteUser
   }
 }
