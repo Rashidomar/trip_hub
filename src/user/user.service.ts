@@ -20,4 +20,9 @@ export class UserService {
   async findAll(){
     return this.users
   }
+
+  createUser(userData){
+    const result = userData
+    console.log(result)
+  }
 }
