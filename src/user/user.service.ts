@@ -24,18 +24,18 @@ export class UserService {
     });
   }
 
-  async createUser(userData): Promise<UserEntity | null> {
+  async createUser(userDto): Promise<UserEntity | null> {
     const newUser = new UserEntity();
-    newUser.username = userData.username;
-    newUser.email = userData.email;
-    newUser.password = userData.password;
+    newUser.username = userDto.username;
+    newUser.email = userDto.email;
+    newUser.password = userDto.password;
     const savedUser = this.userRepo.save(newUser);
     return savedUser;
   }
 
-  async updateUser(userData) {
-    const findUser = await this.findById(userData.id)
-    findUser.username = userData.username
+  async updateUser(userDto) {
+    const findUser = await this.findById(userDto.id)
+    findUser.username = userDto.username
     const updatedUser = await this.userRepo.save(findUser)
     return updatedUser
   }
